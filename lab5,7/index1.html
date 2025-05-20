@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление контрактами сотрудников</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .employee-form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Управление контрактами сотрудников</h1>
+    <div class="employee-form">
+        <h2>Введите данные о сотрудниках</h2>
+        <form id="employeeForm">
+            <label for="surname">Фамилия:</label>
+            <input type="text" id="surname" required>
+            <label for="contractDate">Дата заключения контракта (ГГГГ-ММ-ДД):</label>
+            <input type="date" id="contractDate" required>
+            <label for="contractDuration">Срок контракта (в годах):</label>
+            <input type="number" id="contractDuration" required>
+            <label for="birthDate">Дата рождения (ГГГГ-ММ-ДД):</label>
+            <input type="date" id="birthDate" required>
+            <button type="submit">Добавить сотрудника</button>
+        </form>
+    </div>
+
+    <h2>Список сотрудников</h2>
+    <ul id="employeeList"></ul>
+
+    <h2>Проверка окончания контрактов</h2>
+    <label for="checkYear">Введите год для проверки:</label>
+    <input type="number" id="checkYear">
+    <button id="checkButton">Проверить</button>
+    <ul id="contractEndList"></ul>
+
+    <script src="script1.js"></script>
+</body>
+</html>

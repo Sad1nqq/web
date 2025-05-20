@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .task {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .task input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+        .filter-buttons {
+            margin: 15px 0;
+        }
+        .filter-buttons button {
+            margin-right: 5px;
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .filter-buttons button.active {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class ToDoForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    task: ''
+                };
+            }
+
+            handleChange = (event) => {
+                this.setState({ task: event.target.value });
+            }
+
+            handleSubmit = (event) => {
+                event.preventDefault();
+                if (this.state.task.trim()) {
+                    this.props.addTask(this.state.task);
+                    this.setState({ task: '' });
+                }
+            }
+
+            render() {
+                return (
+                    <div className="form-container">
+                        <form onSubmit={this.handleSubmit}>
+                            <input
+                                type="text"
+                                value={this.state.task}
+                                onChange={this.handleChange}
+                                placeholder="Введите задачу"
+                                required
+                            />
+                            <button type="submit">Add</button>
+                        </form>
+                    </div>
+                );
+            }
+        }
+
+        class ToDoItems extends React.Component {
+            render() {
+                const { tasks, toggleTask } = this.props;
+
+                return (
+                    <div>
+                        {tasks.map((task, index) => (
+                            <div key={index} className="task">
+                                <input
+                                    type="checkbox"
+                                    checked={task.completed}
+                                    onChange={() => toggleTask(index)}
+                                />
+                                <span className={task.completed ? 'completed' : ''}>
+                                    {task.name}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                );
+            }
+        }
+
+        class ToDoList extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    tasks: [],
+                    filter: 'all' // 'all', 'completed', 'incomplete'
+                };
+            }
+
+            addTask = (taskName) => {
+                const newTask = { name: taskName, completed: false };
+                this.setState((prevState) => ({
+                    tasks: [...prevState.tasks, newTask]
+                }));
+            }
+
+            toggleTask = (index) => {
+                this.setState((prevState) => {
+                    const tasks = [...prevState.tasks];
+                    tasks[index].completed = !tasks[index].completed;
+                    return { tasks };
+                });
+            }
+
+            setFilter = (filter) => {
+                this.setState({ filter });
+            }
+
+            render() {
+                const { tasks, filter } = this.state;
+                const filteredTasks = tasks.filter(task => {
+                    if (filter === 'completed') return task.completed;
+                    if (filter === 'incomplete') return !task.completed;
+                    return true; // 'all'
+                });
+
+                return (
+                    <div>
+                        <ToDoForm addTask={this.addTask} />
+                        <div className="filter-buttons">
+                            <button onClick={() => this.setFilter('all')}>Все</button>
+                            <button onClick={() => this.setFilter('completed')}>Выполненные</button>
+                            <button onClick={() => this.setFilter('incomplete')}>Невыполненные</button>
+                        </div>
+                        <ToDoItems tasks={filteredTasks} toggleTask={this.toggleTask} />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<ToDoList />, document.getElementById('root'));
+    </script>
+</body>
+</html>

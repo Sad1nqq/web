@@ -1,0 +1,36 @@
+body {
+    text-align: center;
+    color: green;
+    font-style: italic;
+    font-size: 1.2em; 
+}
+
+.company-name {
+    text-align: right;
+    color: yellow;
+}
+
+.logo {
+    max-width: 100px; 
+}
+
+.price-list {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+.price-list th, .price-list td {
+    border: 2px solid black;
+    padding: 8px;
+}
+
+.price-list th {
+    background-color: yellow;
+}
+
+.services-list {
+    list-style-type: square;
+    display: inline-block; 
+}
+

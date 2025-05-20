@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        img {
+            display: block;
+            margin: 10px 0;
+            width: 150px;
+            height: 100px;
+        }
+
+        #header img {
+            margin-right: 10px;
+        }
+
+        #message {
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <img src="logo.jpg" alt="Логотип" id="logo">
+        <h1 id="main_h1">Заголовок сайта</h1>
+    </div>
+    <img src="moto1.jpg" alt="Мотоцикл 1">
+    <img src="moto2.jpg" alt="Мотоцикл 2" id="moto2">
+    <img src="moto3.jpg" alt="Мотоцикл 3">
+    <button id="hideLogoButton">Скрыть логотип</button>
+    <button id="hideOtherImagesButton">Скрыть остальные изображения</button>
+    <button id="animateMotoButton">Анимировать moto2.jpg</button>
+    <button id="addParagraphButton">Добавить параграф</button>
+
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function () {
+            var texH1 = $('#main_h1').text('текст измененный с помощью jquery');
+            var myLogo1 = $('img[src*="logo.jpg"]');  // Исправлено: добавлены кавычки
+            var myLogo2 = $('img[alt="Логотип"]');
+            var myLogo3 = $('#logo');
+
+            $('#hideLogoButton').click(function () {
+                myLogo1.hide(3000, function () {
+                    $('#message').text('Логотип скрыт.');
+                });
+            });
+
+            var otherImages = $('img:not(:first)');
+
+            $('#hideOtherImagesButton').click(function () {
+                otherImages.hide(5000, function () {
+                    $('#message').text('Остальные изображения скрыты.');
+                });
+            });
+            function changeAttribute(id, attr, value) {
+                $('#' + id).attr(attr, value);
+            }
+            changeAttribute('main_h1', 'title', 'Новый заголовок');
+            // 3. Выборка для картинки второго мотоцикла moto2.jpg
+            var moto2 = $('#moto2');
+            $('#animateMotoButton').click(function () {
+                moto2.css('border', '1px solid #333333')
+                    .animate({ borderWidth: '5px' }, 5000)
+                    .fadeOut(5000, function () {
+                        $('#message').text('Анимация мотоцикла завершена.');
+                    });
+            });
+            // 4. Добавление нового абзаца
+            $('#addParagraphButton').click(function () {
+                $('<p id="newparagraph">Это новый абзац</p>').appendTo('body')
+                    .css({
+                        'background-color': 'black',
+                        'color': 'white'
+                    });
+                $('#message').text('Новый абзац добавлен.');
+            });
+        });
+    </script>
+</body>
+
+</html>

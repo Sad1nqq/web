@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            cursor: pointer;
+            background-color: #f2f2f2;
+        }
+        .low-stock {
+            background-color: rgba(250, 250, 8, 0.726);
+        }
+        .out-of-stock {
+            background-color: rgba(255, 0, 0, 0.527);
+        }
+        .summary {
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const productsData = [
+            { id: 1, name: 'Смартфон', price: 100, quantity: 5 },
+            { id: 2, name: 'Компьютер', price: 200, quantity: 0 },
+            { id: 3, name: 'Монитор', price: 150, quantity: 2 },
+            { id: 4, name: 'Мотоцикл', price: 300, quantity: 10 },
+            { id: 5, name: 'Клавиатура', price: 50, quantity: 1 },
+        ];
+
+        class ProductCatalog extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    products: productsData,
+                    sortColumn: 'id',
+                    sortDirection: 'asc',
+                };
+            }
+
+            handleSort = (column) => {
+                const { sortColumn, sortDirection, products } = this.state;
+                let newDirection = 'asc';
+
+                if (sortColumn === column && sortDirection === 'asc') {
+                    newDirection = 'desc';
+                }
+
+                const sortedProducts = [...products].sort((a, b) => {
+                    if (a[column] < b[column]) return newDirection === 'asc' ? -1 : 1;
+                    if (a[column] > b[column]) return newDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+
+                this.setState({
+                    products: sortedProducts,
+                    sortColumn: column,
+                    sortDirection: newDirection,
+                });
+            }
+
+            getTotalQuantity = () => {
+                return this.state.products.reduce((total, product) => total + product.quantity, 0);
+            }
+
+            getTotalValue = () => {
+                return this.state.products.reduce((total, product) => total + (product.price * product.quantity), 0);
+            }
+
+            render() {
+                const { products } = this.state;
+
+                return (
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th onClick={() => this.handleSort('id')}>№</th>
+                                    <th onClick={() => this.handleSort('name')}>Название товара</th>
+                                    <th onClick={() => this.handleSort('price')}>Цена</th>
+                                    <th onClick={() => this.handleSort('quantity')}>Количество</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((product, index) => (
+                                    <tr key={product.id} className={product.quantity === 0 ? 'out-of-stock' : product.quantity < 3 ? 'low-stock' : ''}>
+                                        <td>{index + 1}</td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price} ₽</td>
+                                        <td>{product.quantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div className="summary">
+                            <p>Общее количество товаров: {this.getTotalQuantity()}</p>
+                            <p>Общая стоимость товаров: {this.getTotalValue()} ₽</p>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<ProductCatalog />, document.getElementById('root'));
+    </script>
+</body>
+</html>

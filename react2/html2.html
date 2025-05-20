@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .menu {
+            margin-top: 20px;
+        }
+        .menu a {
+            display: block;
+            margin: 5px 0;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const professions = [
+            { name: 'Разработчик', links: ['GitHub', 'Stack Overflow', 'MDN', 'W3Schools', 'CodePen', 'FreeCodeCamp', 'HackerRank'] },
+            { name: 'Дизайнер', links: ['Behance', 'Dribbble', 'Adobe', 'Canva', 'Figma', 'Sketch', 'InVision'] },
+            { name: 'Маркетолог', links: ['HubSpot', 'Moz', 'Neil Patel', 'Google Analytics', 'Buffer', 'Hootsuite', 'Mailchimp'] },
+            { name: 'Менеджер', links: ['Harvard Business Review', 'LinkedIn', 'Forbes', 'MindTools', 'Project Management Institute', 'Trello', 'Asana'] },
+            { name: 'Аналитик', links: ['Kaggle', 'Tableau', 'Google Data Studio', 'Excel', 'R-bloggers', 'DataCamp', 'Coursera'] }
+        ];
+
+        const ProfessionSelector = ({ selectedProfession, onSelect }) => {
+            return (
+                <div>
+                    <h2>Выберите профессию:</h2>
+                    {professions.map((profession, index) => (
+                        <div key={index}>
+                            <input
+                                type="radio"
+                                id={profession.name}
+                                name="profession"
+                                value={profession.name}
+                                checked={selectedProfession === profession.name}
+                                onChange={() => onSelect(profession.name)}
+                            />
+                            <label htmlFor={profession.name}>{profession.name}</label>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        const JobMenu = ({ profession }) => {
+            const selectedJob = professions.find(p => p.name === profession);
+            return (
+                <div className="menu">
+                    <h2>Полезные ссылки для {profession}:</h2>
+                    {selectedJob && selectedJob.links.map((link, index) => (
+                        <a key={index} href={`https://${link.toLowerCase().replace(/\s+/g, '')}.com`} target="_blank" rel="noopener noreferrer">
+                            {link}
+                        </a>
+                    ))}
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [selectedProfession, setSelectedProfession] = React.useState(professions[0].name);
+
+            return (
+                <div>
+                    <ProfessionSelector selectedProfession={selectedProfession} onSelect={setSelectedProfession} />
+                    <JobMenu profession={selectedProfession} />
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

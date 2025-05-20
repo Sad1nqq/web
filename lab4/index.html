@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Обработка бланка заказа</title>
+<style>
+body {
+    font-family: sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.total {
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>Обработка бланка заказа</h1>
+
+<form id="orderForm">
+    <table>
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Цена за шт.</th>
+                <th>Упаковка (шт)</th>
+                <th>Упаковка требуется</th>
+                <th>Количество</th>
+            </tr>
+        </thead>
+        <tbody id="productTable">
+        </tbody>
+    </table>
+
+    <label for="delivery">Нужна доставка?</label>
+    <input type="checkbox" id="delivery" name="delivery"><br><br>
+
+    <button type="button" onclick="processOrder()">Рассчитать заказ</button>
+</form>
+
+<div id="orderSummary">
+    <h2>Итого:</h2>
+    <p>Сумма за товары: <span id="subtotal"></span> руб.</p>
+    <p>Скидка: <span id="discount"></span> руб.</p>
+    <p>Стоимость упаковки: <span id="packagingCost"></span> руб.</p>
+    <p>Стоимость доставки: <span id="deliveryCost"></span> руб.</p>
+    <p class="total">Итоговая сумма: <span id="total"></span> руб.</p>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

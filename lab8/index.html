@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример</title>
+    <style>
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        #forfooter img {
+            width: 150px;
+            height: 100x;
+            margin: 5px;
+        }
+
+        #moto_table {
+            border-collapse: collapse;
+            width: auto;
+        }
+
+        #moto_table td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="moto_models">
+        <ul>
+            <li>Мотоцикл 1</li>
+            <li>Автомобиль 1</li>
+            <li>Мотоцикл 2</li>
+        </ul>
+    </div>
+
+    <div id="forfooter">
+        <img src="block.png" title="Производители">
+        <img src="model.png" title="Другие">
+        <img src="logo.jpg" title="Производители">
+    </div>
+
+    <table id="moto_table">
+        <tr>
+            <td>Ячейка 1</td>
+            <td>Ячейка 2</td>
+        </tr>
+        <tr>
+            <td>Ячейка 3</td>
+            <td>Ячейка 4</td>
+        </tr>
+        <tr>
+            <td>Ячейка 5</td>
+            <td>Ячейка 6</td>
+        </tr>
+        <tr>
+            <td>Ячейка 7</td>
+            <td>Ячейка 8</td>
+        </tr>
+    </table>
+
+    <div id="output">
+        <h2>Отобранные элементы:</h2>
+        <div id="motoModelsOutput"></div>
+        <div id="imagesOutput"></div>
+        <div id="lastCellsOutput"></div>
+    </div>
+
+    <script>
+        // 1. Отбор элементов li с текстом "мотоцикл"
+        const motoModels = document.querySelectorAll('#moto_models li');
+        const filteredMotoModels = Array.from(motoModels).filter(li => li.textContent.includes('Мотоцикл'));
+
+        // Отображение отобранных мотоциклов
+        const motoModelsOutput = document.getElementById('motoModelsOutput');
+        filteredMotoModels.forEach(li => {
+            const item = document.createElement('div');
+            item.textContent = li.textContent;
+            motoModelsOutput.appendChild(item);
+        });
+
+        // 2. Отбор картинок с title "Производители"
+        const images = document.querySelectorAll('#forfooter img[title="Производители"]');
+
+        // Отображение отобранных изображений
+        const imagesOutput = document.getElementById('imagesOutput');
+        images.forEach(img => {
+            const imgElement = document.createElement('img');
+            imgElement.src = img.src;
+            imgElement.alt = img.title;
+            imgElement.style.width = '100px'; // Установка ширины для отображения
+            imgElement.style.margin = '5px';
+            imagesOutput.appendChild(imgElement);
+        });
+
+        // 3. Отбор последних ячеек в четных строках таблицы
+        const rows = document.querySelectorAll('#moto_table tr');
+        const lastCellsInEvenRows = Array.from(rows)
+            .filter((row, index) => index % 2 === 1) // Четные строки
+            .map(row => row.lastElementChild); // Последняя ячейка
+
+        // Отображение последних ячеек
+        const lastCellsOutput = document.getElementById('lastCellsOutput');
+        lastCellsInEvenRows.forEach(cell => {
+            const item = document.createElement('div');
+            item.textContent = cell.textContent;
+            lastCellsOutput.appendChild(item);
+        });
+    </script>
+</body>
+
+</html>

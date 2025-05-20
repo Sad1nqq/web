@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Мировые Часы</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+         body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 500;
+            color: #222;
+        }
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .clock {
+            font-size: 32px;
+            padding: 15px;
+            border-radius: 6px;
+            background: #f8f8f8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    time: new Date()
+                };
+            }
+            
+            componentDidMount() {
+                this.timerID = setInterval(() => this.tick(), 1000);
+            }
+            
+            componentWillUnmount() {
+                clearInterval(this.timerID);
+            }
+            
+            tick() {
+                this.setState({ time: new Date() });
+            }
+            
+            formatTime() {
+                const { format = '24', timezone } = this.props;
+                const { time } = this.state;
+                
+                let hours, minutes, seconds, period = '';
+                
+                let adjustedTime = time;
+                if (timezone) {
+                    const [sign, tzHours, tzMinutes] = timezone.match(/(\+|-)(\d{1,2}):(\d{2})/).slice(1);
+                    const offset = (sign === '+' ? 1 : -1) * (parseInt(tzHours) * 60 + parseInt(tzMinutes));
+                    const localOffset = time.getTimezoneOffset();
+                    adjustedTime = new Date(time.getTime() + (offset * 60000) + (localOffset * 60000));
+                }
+                
+                hours = adjustedTime.getHours();
+                minutes = adjustedTime.getMinutes();
+                seconds = adjustedTime.getSeconds();
+                
+                if (format === '12') {
+                    period = hours >= 12 ? 'ПМ' : 'АМ';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // Преобразовать 0 в 12
+                }
+                
+                hours = hours < 10 ? '0' + hours : hours;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                
+                return { hours, minutes, seconds, period };
+            }
+            
+            render() {
+                const { format = '24' } = this.props;
+                const { hours, minutes, seconds, period } = this.formatTime();
+                const timeString = `${hours}:${minutes}:${seconds}`;
+                
+                return (
+                    <div className="clock">
+                        {format === '12' ? `${timeString} ${period}` : timeString}
+                    </div>
+                );
+            }
+        }
+        
+        ReactDOM.render(
+            <div>
+                <h1>Мировые Часы</h1>
+                <div className="clock-container">
+                    <div>
+                        <h2>Минск (24ч формат)</h2>
+                        <Clock format="24" timezone="+3:00" />
+                    </div>
+                    <div>
+                        <h2>Нью-Йорк (12ч формат)</h2>
+                        <Clock format="12" timezone="-4:00" />
+                    </div>
+                    <div>
+                        <h2>Ваше местное время</h2>
+                        <Clock />
+                    </div>
+                </div>
+            </div>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>

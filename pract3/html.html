@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример с блоками</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .block {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .row {
+            margin-bottom: 20px; 
+        }
+    </style>
+</head> 
+<body>
+
+    <div class="container">
+        <!-- Ряд 1: 4 блока -->
+        <div class="row">
+            <div class="col-xs-3 col-lg-3 col-md-12 block">Блок 1</div>
+            <div class="col-xs-3 col-lg-3 col-md-12 block">Блок 2</div>
+            <div class="col-xs-3 col-lg-3 col-md-12 block">Блок 3</div>
+            <div class="col-xs-3 col-lg-3 col-md-12 block">Блок 4</div>
+        </div>
+
+        <!-- Ряд 2: 2 блока, один из которых содержит 3 блока -->
+    <div class="row">
+        <div class="col-xs-5 col-md-5 block">Блок 5</div>
+         <div class="col-xs-6 col-md-6 block">
+            <div class="row">  
+                <div class="col-xs-12 col-md-12 block">Блок 6</div>
+                <div class="col-xs-6 col-md-6 block">Блок 6.1</div>
+                <div class="col-xs-6 hidden-sm col-md-6 block">Блок 6.2</div>
+            </div>
+         </div>
+    </div>
+
+        <!-- Ряд 3: 1 блок на 5 колонок и 2 блока по 2 колонки -->
+        <div class="row">
+            <div class="col-xs-5 col-md-5 block hidden-xs">Блок 7</div>
+            <div class="col-xs-2 col-md-2 block">Блок 8</div>
+            <div class="col-xs-2 col-md-2 block">Блок 9</div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
+

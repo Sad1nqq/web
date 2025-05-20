@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример</title>
+    <style>
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        #forfooter img {
+            width: 150px;
+            height: 100px; /* Исправлено с 100x на 100px */
+            margin: 5px;
+        }
+
+        #moto_table {
+            border-collapse: collapse;
+            width: auto;
+        }
+
+        #moto_table td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div id="moto_models">
+        <ul>
+            <li>Мотоцикл 1</li>
+            <li>Автомобиль 1</li>
+            <li>Мотоцикл 2</li>
+        </ul>
+    </div>
+
+    <div id="forfooter">
+        <img src="block.png" title="Производители">
+        <img src="model.png" title="Другие">
+        <img src="logo.jpg" title="Производители">
+    </div>
+
+    <table id="moto_table">
+        <tr>
+            <td>Ячейка 1</td>
+            <td>Ячейка 2</td>
+        </tr>
+        <tr>
+            <td>Ячейка 3</td>
+            <td>Ячейка 4</td>
+        </tr>
+        <tr>
+            <td>Ячейка 5</td>
+            <td>Ячейка 6</td>
+        </tr>
+        <tr>
+            <td>Ячейка 7</td>
+            <td>Ячейка 8</td>
+        </tr>
+    </table>
+
+    <div id="output">
+        <h2>Отобранные элементы:</h2>
+        <div id="motoModelsOutput"></div>
+        <div id="imagesOutput"></div>
+        <div id="lastCellsOutput"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#moto_models li').filter(function () {
+                return $(this).text().includes('Мотоцикл');
+            }).each(function () {
+                $('#motoModelsOutput').append('<div>' + $(this).text() + '</div>');
+            });
+
+            $('#forfooter img[title="Производители"]').each(function () {
+                $('#imagesOutput').append('<img src="' + $(this).attr('src') + '" alt="' + $(this).attr('title') + '" style="width: 100px; margin: 5px;">');
+            });
+
+            $('#moto_table tr:even').each(function () {
+                const lastCell = $(this).find('td:last');
+                $('#lastCellsOutput').append('<div>' + lastCell.text() + '</div>');
+            });
+        });
+    </script>
+</body>
+
+</html>

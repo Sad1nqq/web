@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chess Board</title>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    .chess-board {
+      display: inline-block;
+      border: 2px solid #333;
+    }
+    .white {
+      background-color: #ffffff;
+    }
+    .black {
+      background-color: #000000;
+    }
+    .row-container {
+      display: flex;
+      height: 50px;
+    }
+    .row-notation {
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .column-notation {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .column-container {
+      display: flex;
+    }
+    .column-side {
+      width: 20px;
+    }
+    .column-center {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const Cell = ({ color }) => {
+      return <div className={`cell ${color}`}></div>;
+    };
+
+    const Row = ({ rowNumber, columns }) => {
+      const getCellColor = (row, col) => (row + col) % 2 === 0 ? 'black' : 'white';
+
+      return (
+        <div className="row-container" key={`row-${rowNumber}`}>
+          <div className="row-notation">{rowNumber}</div>
+          {columns.map((_, colIndex) => (
+            <Cell key={`cell-${rowNumber}-${colIndex}`} color={getCellColor(rowNumber, colIndex)} />
+          ))}
+          <div className="row-notation">{rowNumber}</div>
+        </div>
+      );
+    };
+
+    const ColumnNotations = ({ columns }) => {
+      return (
+        <div className="column-container">
+          <div className="column-side"></div>
+          <div className="column-center">
+            {columns.map((letter, index) => (
+              <div key={`col-${index}`} className="column-notation" style={{ width: '50px' }}>{letter}</div>
+            ))}
+          </div>
+          <div className="column-side"></div>
+        </div>
+      );
+    };
+
+    const ChessBoard = () => {
+      const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+      const rows = [8, 7, 6, 5, 4, 3, 2, 1];
+
+      return (
+        <div className="chess-board">
+          <ColumnNotations columns={columns} />
+          {rows.map(rowNumber => (
+            <Row key={`row-${rowNumber}`} rowNumber={rowNumber} columns={columns} />
+          ))}
+          <ColumnNotations columns={columns} />
+        </div>
+      );
+    };
+
+    ReactDOM.render(
+      <ChessBoard />,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+</html>
